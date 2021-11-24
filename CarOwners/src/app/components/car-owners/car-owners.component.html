@@ -1,0 +1,61 @@
+<div class="wrapper">
+  <div class="demo-button-container">
+    <button
+      mat-raised-button
+      (click)="addData()"
+      class="demo-button"
+    >
+      Добавить
+    </button>
+    <button
+        mat-raised-button
+        [disabled]="!dataSource.length"
+        (click)="removeData()"
+        class="demo-button">
+      Просмотр
+    </button>
+    <button
+        mat-raised-button
+        [disabled]="!dataSource.length"
+
+        class="demo-button">
+      Редактировать
+    </button>
+    <button
+        mat-raised-button
+        [disabled]="!dataSource.length"
+
+        class="demo-button">
+      Удалить
+    </button>
+  </div>
+
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef> Фамилия </th>
+      <td mat-cell *matCellDef="let element"> {{element.aLastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> Имя </th>
+      <td mat-cell *matCellDef="let element"> {{element.aFirstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="middleName">
+      <th mat-header-cell *matHeaderCellDef> Отчество </th>
+      <td mat-cell *matCellDef="let element"> {{element.aMiddleName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cars">
+      <th mat-header-cell *matHeaderCellDef> Колличество автомобилей </th>
+      <td mat-cell *matCellDef="let element"> {{element.aCars}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
+

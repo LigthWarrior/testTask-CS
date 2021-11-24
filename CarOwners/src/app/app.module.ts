@@ -3,14 +3,25 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CarOwnersComponent } from './components';
+
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+
+const matModules = [
+  MatTableModule,
+  MatButtonModule
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CarOwnersComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ...matModules,
   ],
   providers: [],
   bootstrap: [AppComponent]
