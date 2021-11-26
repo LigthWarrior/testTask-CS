@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { CarOwner } from '../../types';
 import { CarOwnersService } from '../../services';
@@ -15,7 +15,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './car-owners.component.html',
   styleUrls: ['./car-owners.component.css']
 })
-export class CarOwnersComponent implements OnInit {
+export class CarOwnersComponent implements OnInit, OnDestroy {
+
+  isDisabledButton: boolean = true;
 
   private carOwners: CarOwner[] = [];
   private subscription: Subscription = new Subscription();
@@ -26,22 +28,19 @@ export class CarOwnersComponent implements OnInit {
     this.subscription.add(this.getCarOwners());
   }
 
-  // ngOnDestroy(): void {
-  //   this.subscription.unsubscribe();
-  // }
-
   private getCarOwners(): Subscription {
-    return this.carOwnersService.getCarOwners().subscribe((carOwner: any) => {
-      console.log(carOwner);
+    return this.carOwnersService.getCarOwners().subscribe((records: any) => {
+      console.log(this.carOwners);
       // this.carOwners.push(carOwner);
-      this.dataSource = this.carOwners = carOwner;
-
+      this.dataSource = this.carOwners = records;
+      // this.carOwners = records;
       console.log(this.carOwners);
     });
   }
 
   displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
-  dataSource = this.carOwners;
+  dataSource: CarOwner[] = [];
+  // clickedRows = new Set<CarOwner[]>();
 
   @ViewChild(MatTable) table: any;
 
@@ -54,6 +53,14 @@ export class CarOwnersComponent implements OnInit {
   removeData() {
     this.dataSource.pop();
     this.table.renderRows();
+  }
+
+  clickOnRows(event: Event) {
+    console.log(event);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

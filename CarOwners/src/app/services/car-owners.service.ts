@@ -11,10 +11,10 @@ export class CarOwnersService {
 
   constructor(private http: HttpClient) { }
 
-  ROOT_API = '/api/carOwners';
+  ROOT_URL = '/api/carOwners';
 
   getCarOwners(): Observable<CarOwner[]> {
-    return this.http.get<CarOwner[]>(this.ROOT_API).pipe(
+    return this.http.get<CarOwner[]>(this.ROOT_URL).pipe(
       map((response) => response),
     );
   }

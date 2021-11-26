@@ -1,0 +1,160 @@
+<div class="wrapper">
+  <mat-card class="card">
+
+    <h1 class="align-center">Владелец автомобиля</h1>
+
+    <hr>
+
+    <form
+      [formGroup]="eventForm"
+      class="flex-form"
+      #form
+    >
+      <mat-form-field
+        class="width-field"
+        appearance="legacy"
+      >
+        <mat-label>Фамилия</mat-label>
+        <input
+          matInput
+          formControlName="lastName"
+          required>
+        <mat-error
+          *ngIf="isControlInvalid('lastName')"
+          class="validation"
+        >
+        {{ getControlError('firstName') }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="width-field"
+        appearance="legacy"
+      >
+        <mat-label>Имя</mat-label>
+        <input
+          matInput
+          formControlName="firstName"
+          required>
+        <mat-error
+          *ngIf="isControlInvalid('firstName')"
+          class="validation"
+        >
+        {{ getControlError('firstName') }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="width-field"
+        appearance="legacy"
+      >
+        <mat-label>Отчество</mat-label>
+        <input
+          matInput
+          formControlName="middleName"
+          required>
+        <mat-error
+          *ngIf="isControlInvalid('middleName')"
+          class="validation"
+        >
+        {{ getControlError('middleName') }}
+        </mat-error>
+      </mat-form-field>
+
+      <div formArrayName="requests_attributes">
+        <button
+          mat-stroked-button
+          (click)="addRequirement()"
+          color="primary"
+        >
+        Добавить автомобиль
+        </button>
+
+        <div
+          *ngFor="let requirement of requests_attributes().controls; let i=index"
+          [formGroupName]="i"
+        >
+          <div>
+          <!-- <div [formControl]="requirement.get('description')"> -->
+            <mat-form-field
+              class="margin-left--16 width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Номер</mat-label>
+              <input
+                matInput
+              >
+            <!-- [formControl]="requirement.get('description')" -->
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Марка</mat-label>
+              <input
+                matInput
+              >
+              <!-- [formControl]="requirement.get('description')" -->
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Модель</mat-label>
+              <input
+                matInput
+              >
+              <!-- [formControl]="requirement.get('description')" -->
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Год</mat-label>
+              <input
+                matInput
+              >
+              <!-- [formControl]="requirement.get('description')" -->
+            </mat-form-field>
+          </div>
+
+            <button
+              mat-button
+              color="warn"
+              (click)="removeRequirement(i)"
+            >
+            Видалити
+            </button>
+
+        </div>
+      </div>
+
+    </form>
+
+    <mat-card-actions class="flex-button">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="submit()"
+        (click)="form.reset()"
+        [disabled]="eventForm.invalid"
+      >
+      Добавить
+      </button>
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="form.reset()"
+      >
+      Очистить
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="form.reset()"
+        routerLink="/"
+      >
+      Назад
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>
