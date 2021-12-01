@@ -6,7 +6,7 @@
     <hr>
 
     <form
-      [formGroup]="eventForm"
+      [formGroup]="cruForm"
       class="flex-form"
       #form
     >
@@ -59,74 +59,72 @@
         </mat-error>
       </mat-form-field>
 
-      <div formArrayName="requests_attributes">
+      <div formArrayName="cars">
         <button
           mat-stroked-button
-          (click)="addRequirement()"
+          (click)="addCar()"
           color="primary"
         >
         Добавить автомобиль
         </button>
 
         <div
-          *ngFor="let requirement of requests_attributes().controls; let i=index"
+          *ngFor="let car of cars().controls; let i=index"
           [formGroupName]="i"
         >
-          <div>
-          <!-- <div [formControl]="requirement.get('description')"> -->
-            <mat-form-field
-              class="margin-left--16 width--18 margit-right--10"
-              appearance="legacy"
+          <mat-form-field
+            class="margin-left--16 width--18 margit-right--10"
+            appearance="legacy"
+          >
+            <mat-label>Номер</mat-label>
+            <input
+              matInput
+              [formControl]="$any(car).get('number')"
+              required
             >
-              <mat-label>Номер</mat-label>
-              <input
-                matInput
-              >
-            <!-- [formControl]="requirement.get('description')" -->
-            </mat-form-field>
-            <mat-form-field
-              class="width--18 margit-right--10"
-              appearance="legacy"
+          </mat-form-field>
+          <mat-form-field
+            class="width--18 margit-right--10"
+            appearance="legacy"
+          >
+            <mat-label>Марка</mat-label>
+            <input
+              matInput
+              [formControl]="$any(car).get('brand')"
+              required
             >
-              <mat-label>Марка</mat-label>
-              <input
-                matInput
-              >
-              <!-- [formControl]="requirement.get('description')" -->
-            </mat-form-field>
-            <mat-form-field
-              class="width--18 margit-right--10"
-              appearance="legacy"
+          </mat-form-field>
+          <mat-form-field
+            class="width--18 margit-right--10"
+            appearance="legacy"
+          >
+            <mat-label>Модель</mat-label>
+            <input
+              matInput
+              [formControl]="$any(car).get('model')"
+              required
             >
-              <mat-label>Модель</mat-label>
-              <input
-                matInput
-              >
-              <!-- [formControl]="requirement.get('description')" -->
-            </mat-form-field>
-            <mat-form-field
-              class="width--18 margit-right--10"
-              appearance="legacy"
+          </mat-form-field>
+          <mat-form-field
+            class="width--18 margit-right--10"
+            appearance="legacy"
+          >
+            <mat-label>Год</mat-label>
+            <input
+              matInput
+              [formControl]="$any(car).get('year')"
+              required
             >
-              <mat-label>Год</mat-label>
-              <input
-                matInput
-              >
-              <!-- [formControl]="requirement.get('description')" -->
-            </mat-form-field>
-          </div>
-
-            <button
+          </mat-form-field>
+          <button
               mat-button
               color="warn"
-              (click)="removeRequirement(i)"
+              (click)="removeCar(i)"
             >
             Видалити
             </button>
-
         </div>
       </div>
-
     </form>
 
     <mat-card-actions class="flex-button">
@@ -135,7 +133,7 @@
         color="primary"
         (click)="submit()"
         (click)="form.reset()"
-        [disabled]="eventForm.invalid"
+        [disabled]="cruForm.invalid"
       >
       Добавить
       </button>
@@ -150,7 +148,7 @@
         mat-flat-button
         color="primary"
         (click)="form.reset()"
-        routerLink="/"
+        routerLink="/records"
       >
       Назад
       </button>

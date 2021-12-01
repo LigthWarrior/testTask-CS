@@ -3,6 +3,7 @@ import { MatTable } from '@angular/material/table';
 import { CarOwner } from '../../types';
 import { CarOwnersService } from '../../services';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 // const ELEMENT_DATA: CarOwner[] = [
 //   {aLastName: 'Иванов', aFirstName: 'Иван', aMiddleName: 'Иванович', aCars: 1},
@@ -18,11 +19,16 @@ import { Subscription } from 'rxjs';
 export class CarOwnersComponent implements OnInit, OnDestroy {
 
   isDisabledButton: boolean = true;
+  carOwnerId: number = 0;
 
+  private lastNameOnClick: string = '';
   private carOwners: CarOwner[] = [];
   private subscription: Subscription = new Subscription();
 
-  constructor(private carOwnersService: CarOwnersService) { }
+  constructor(
+    private carOwnersService: CarOwnersService,
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
     this.subscription.add(this.getCarOwners());
@@ -44,19 +50,49 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatTable) table: any;
 
-  addData() {
+  addData(): void {
     const randomElementIndex = Math.floor(Math.random() * this.carOwners.length);
     this.dataSource.push(this.carOwners[randomElementIndex]);
     this.table.renderRows();
   }
 
-  removeData() {
+  removeData(): void {
     this.dataSource.pop();
     this.table.renderRows();
   }
 
-  clickOnRows(event: Event) {
-    console.log(event);
+  clickOnRows(event: Event): void {
+
+    // if (true) {
+    //   document.onclick = ((e) => {
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //   });
+    // }
+
+    this.isDisabledButton = (this.isDisabledButton === true) ? false : true;
+
+    // ???
+    let body: any = event.currentTarget;
+    body.classList.toggle("demo-row-is-clicked");
+
+    this.lastNameOnClick = body.firstElementChild.textContent;
+    let ttt = body.firstElementChild.textContent;
+    let tempCarOwner = this.dataSource.find(item => item.lastName === 'Иванов');
+    // this.carOwnerId = tempCarOwner?.id;
+    // console.log(tempCarOwner);
+    // console.log(body);
+    // console.log(body.firstElementChild.textContent);
+  }
+
+  showRecord(): void {
+    // console.log(this.lastNameOnClick);
+    // const carOwnerId = +this.route.snapshot.params.id;
+    // console.log('id: ', this.carOwnerId);
+    // this.carOwner$ = this.carOwnersService.carOwner$;
+    this.carOwnersService.getCarOwnerById(this.carOwnerId).subscribe(console.log);
+    // console.log('srv: ', srv);
+
   }
 
   ngOnDestroy(): void {

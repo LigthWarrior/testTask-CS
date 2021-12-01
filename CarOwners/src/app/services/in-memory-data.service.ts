@@ -11,14 +11,14 @@ export class InMemoryDataService implements InMemoryDbService {
 
   createDb() {
       const carOwners = [
-        {id: 11, aLastName: 'Иванов', aFirstName: 'Иван', aMiddleName: 'Иванович', aCars: [
+        {id: 11, lastName: 'Иванов', firstName: 'Иван', middleName: 'Иванович', cars: [
           {id: 11, number: 'AX2544RB', brand: 'KIA', model: 'Optima', year: 2018}
         ]},
-        {id: 12, aLastName: 'Петрова', aFirstName: 'Наталия', aMiddleName: 'Игоревна', aCars: [
+        {id: 12, lastName: 'Петрова', firstName: 'Наталия', middleName: 'Игоревна', cars: [
           {id: 12, number: 'AX2121HP', brand: 'Hyundai', model: 'Accent', year: 2009},
           {id: 12, number: 'BC7286AE', brand: 'KIA', model: 'Optima', year: 2019}
         ]},
-        {id: 13, aLastName: 'Антонов', aFirstName: 'Алексей', aMiddleName: 'Сергеевич', aCars: [
+        {id: 13, lastName: 'Антонов', firstName: 'Алексей', middleName: 'Сергеевич', cars: [
           {id: 13, number: 'RF4556TY', brand: 'Honda', model: 'Civic', year: 2011}
         ]},
       ];

@@ -5,12 +5,15 @@ import { CarOwnersComponent, CruFormComponent } from './components';
 const routes: Routes = [
   {
     path: '', component: CarOwnersComponent, children: [
-      {path: '', redirectTo: '/', pathMatch: 'full'},
-      // {path: 'record', component: CruFormComponent},
+      {path: '', redirectTo: 'records', pathMatch: 'full'},
+      {path: 'records', component: CruFormComponent},
     ]
   },
   {
     path: 'record', component: CruFormComponent
+  },
+  {
+    path: 'records/:id', component: CruFormComponent
   }
 ];
 

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CarOwnersService } from 'src/app/services';
+import { CarOwner } from 'src/app/types';
 
 @Component({
   selector: 'app-cru-form',
@@ -8,14 +11,16 @@ import { FormBuilder, FormArray, FormControl, FormGroup, Validators } from '@ang
 })
 export class CruFormComponent implements OnInit {
 
-  eventForm: any;
+  cruForm: any;
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
+    private carOwnerService: CarOwnersService,
   ) { }
 
   ngOnInit(): void {
-    this.eventForm = this.fb.group ({
+    this.cruForm = this.fb.group ({
       lastName: new FormControl('',
         [Validators.required],
       ),
@@ -25,36 +30,40 @@ export class CruFormComponent implements OnInit {
       middleName: new FormControl('',
         [Validators.required],
       ),
-      requests_attributes: this.fb.array([]),
+      cars: this.fb.array([]),
     });
+    this.addCar();
   }
 
-  requests_attributes(): FormArray {
-    return this.eventForm.get('requests_attributes') as FormArray;
+  cars(): FormArray {
+    return this.cruForm.get('cars') as FormArray;
   }
 
-  newRequirement(): FormGroup {
+  newCar(): FormGroup {
     return new FormGroup ({
-      description: new FormControl(''),
+      number: new FormControl(''),
+      brand: new FormControl(''),
+      model: new FormControl(''),
+      year: new FormControl(''),
     });
   }
 
-  addRequirement(): void {
-    this.requests_attributes().push(this.newRequirement());
+  addCar(): void {
+    this.cars().push(this.newCar());
   }
 
-  removeRequirement(i: number): void {
-    this.requests_attributes().removeAt(i);
+  removeCar(i: number): void {
+    this.cars().removeAt(i);
   }
 
   isControlInvalid(fieldName: string): boolean {
-    return (this.eventForm.get(fieldName).invalid
-      && (this.eventForm.get(fieldName).dirty
-      || this.eventForm.get(fieldName).touched));
+    return (this.cruForm.get(fieldName).invalid
+      && (this.cruForm.get(fieldName).dirty
+      || this.cruForm.get(fieldName).touched));
   }
 
   getControlError(controlName: string): string | null {
-    const control = this.eventForm.get(controlName);
+    const control = this.cruForm.get(controlName);
     if (control.errors.required) {
       return 'Поле не может быть пустым';
     }
@@ -62,9 +71,20 @@ export class CruFormComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.eventForm.invalid) {
+    if (this.cruForm.invalid) {
       return;
     }
+
+    const jsonData = this.cruForm.value;
+
+    this.carOwnerService.createOwner(jsonData).subscribe((response: CarOwner) => {
+      console.log(response);
+      this.router.navigate(['/records']);
+    });
+
+    // this.carOwnerService.createOwner(jsonData).subscribe((response: CarOwner) => {
+    //   this.router.navigate(['/posts', response.id]);
+    // });
   }
 
 }
