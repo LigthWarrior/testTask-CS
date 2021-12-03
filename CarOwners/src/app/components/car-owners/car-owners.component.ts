@@ -5,12 +5,6 @@ import { CarOwnersService } from '../../services';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-// const ELEMENT_DATA: CarOwner[] = [
-//   {aLastName: 'Иванов', aFirstName: 'Иван', aMiddleName: 'Иванович', aCars: 1},
-//   {aLastName: 'Петрова', aFirstName: 'Наталия', aMiddleName: 'Игоревна', aCars: 2},
-//   {aLastName: 'Антонов', aFirstName: 'Алексей', aMiddleName: 'Сергеевич', aCars: 2},
-// ];
-
 @Component({
   selector: 'app-car-owners',
   templateUrl: './car-owners.component.html',
@@ -19,11 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 export class CarOwnersComponent implements OnInit, OnDestroy {
 
   isDisabledButton: boolean = true;
-  carOwnerId: number = 0;
-
-  private lastNameOnClick: string = '';
   private carOwners: CarOwner[] = [];
   private subscription: Subscription = new Subscription();
+  currentCarOwnerId: number = 0;
+  currentCarOwner: CarOwner | undefined;
+
 
   constructor(
     private carOwnersService: CarOwnersService,
@@ -36,11 +30,13 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
 
   private getCarOwners(): Subscription {
     return this.carOwnersService.getCarOwners().subscribe((records: any) => {
-      console.log(this.carOwners);
-      // this.carOwners.push(carOwner);
       this.dataSource = this.carOwners = records;
-      // this.carOwners = records;
-      console.log(this.carOwners);
+    });
+  }
+
+  private getCarOwnerById(currentCarOwnerId: number): Subscription {
+    return this.carOwnersService.getCarOwnerById(currentCarOwnerId).subscribe((record: CarOwner) => {
+      this.currentCarOwner = record;
     });
   }
 
@@ -71,28 +67,20 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
     // }
 
     this.isDisabledButton = (this.isDisabledButton === true) ? false : true;
-
     // ???
     let body: any = event.currentTarget;
     body.classList.toggle("demo-row-is-clicked");
 
-    this.lastNameOnClick = body.firstElementChild.textContent;
-    let ttt = body.firstElementChild.textContent;
-    let tempCarOwner = this.dataSource.find(item => item.lastName === 'Иванов');
-    // this.carOwnerId = tempCarOwner?.id;
-    // console.log(tempCarOwner);
-    // console.log(body);
-    // console.log(body.firstElementChild.textContent);
+    const lastNameOnClick = body.firstElementChild.textContent.trim();
+    const currentCarOwner = this.carOwners.find( item => item.lastName === lastNameOnClick);
+    if (currentCarOwner?.id !== undefined) {
+      this.currentCarOwnerId = currentCarOwner?.id;
+    }
+
   }
 
   showRecord(): void {
-    // console.log(this.lastNameOnClick);
-    // const carOwnerId = +this.route.snapshot.params.id;
-    // console.log('id: ', this.carOwnerId);
-    // this.carOwner$ = this.carOwnersService.carOwner$;
-    this.carOwnersService.getCarOwnerById(this.carOwnerId).subscribe(console.log);
-    // console.log('srv: ', srv);
-
+    this.getCarOwnerById(this.currentCarOwnerId);
   }
 
   ngOnDestroy(): void {

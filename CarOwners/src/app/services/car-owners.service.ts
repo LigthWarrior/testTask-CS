@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CarOwner } from '../types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarOwnersService {
+  // carOwner$: BehaviorSubject<CarOwner> = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient) { }
 

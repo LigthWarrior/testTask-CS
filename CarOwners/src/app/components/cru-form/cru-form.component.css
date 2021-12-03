@@ -11,6 +11,12 @@
   justify-content: center;
 }
 
+.flex-cars-fields-viewing {
+  display: flex;
+  justify-content: center;
+  max-width: 548px;
+}
+
 .mat-form-field {
   margin-top: 16px;
 }
@@ -18,6 +24,11 @@
 .flex-button {
   display: flex;
   justify-content: space-between;
+}
+
+.flex-button-viewing {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .button-center {

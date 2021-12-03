@@ -1,22 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CarOwnersService } from 'src/app/services';
-import { CarOwner } from 'src/app/types';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CarOwnersService } from '../../services';
+import { CarOwner } from '../../types';
 
 @Component({
   selector: 'app-cru-form',
   templateUrl: './cru-form.component.html',
   styleUrls: ['./cru-form.component.css']
 })
-export class CruFormComponent implements OnInit {
+export class CruFormComponent implements OnInit, OnDestroy {
 
   cruForm: any;
+  currentCarOwner: CarOwner | undefined;
+  editable: boolean = false;
+  private subscription : Subscription = new Subscription();
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private carOwnerService: CarOwnersService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +37,41 @@ export class CruFormComponent implements OnInit {
       ),
       cars: this.fb.array([]),
     });
-    this.addCar();
+
+    const carOwnerId = +this.route.snapshot.params.id;
+
+    if (carOwnerId) {
+      this.subscription.add(this.getCarOwnerById(carOwnerId));
+    } else {
+      this.addCar();
+    }
+
+  }
+
+  private getCarOwnerById(id: number): void {
+    this.carOwnerService.getCarOwnerById(id).subscribe((record: CarOwner) => {
+      this.currentCarOwner = record;
+      this.setCarOwnerFormFields();
+      this.setCarsFormFields();
+    });
+  }
+
+  private setCarOwnerFormFields(): void {
+    const formControls = this.cruForm.controls;
+    formControls.lastName.value = this.currentCarOwner?.lastName;
+    formControls.firstName.value = this.currentCarOwner?.firstName;
+    formControls.middleName.value = this.currentCarOwner?.middleName;
+  }
+
+  private setCarsFormFields(): void {
+      this.currentCarOwner?.cars.forEach((item, index) => {
+        this.addCar();
+        const formCarsControls = this.cruForm.controls.cars.controls[index].controls;
+        formCarsControls.number.value = item.number;
+        formCarsControls.brand.value = item.brand;
+        formCarsControls.model.value = item.model;
+        formCarsControls.year.value = item.year;
+    });
   }
 
   cars(): FormArray {
@@ -85,6 +124,10 @@ export class CruFormComponent implements OnInit {
     // this.carOwnerService.createOwner(jsonData).subscribe((response: CarOwner) => {
     //   this.router.navigate(['/posts', response.id]);
     // });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

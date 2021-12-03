@@ -1,158 +1,277 @@
 <div class="wrapper">
-  <mat-card class="card">
+  <ng-template #add>
+    <mat-card class="card">
 
-    <h1 class="align-center">Владелец автомобиля</h1>
+      <h1 class="align-center">Владелец автомобиля</h1>
 
-    <hr>
+      <hr>
 
-    <form
-      [formGroup]="cruForm"
-      class="flex-form"
-      #form
-    >
-      <mat-form-field
-        class="width-field"
-        appearance="legacy"
+      <form
+        [formGroup]="cruForm"
+        class="flex-form"
+        #form
       >
-        <mat-label>Фамилия</mat-label>
-        <input
-          matInput
-          formControlName="lastName"
-          required>
-        <mat-error
-          *ngIf="isControlInvalid('lastName')"
-          class="validation"
+        <mat-form-field
+          class="width-field"
+          appearance="legacy"
         >
-        {{ getControlError('firstName') }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field
-        class="width-field"
-        appearance="legacy"
-      >
-        <mat-label>Имя</mat-label>
-        <input
-          matInput
-          formControlName="firstName"
-          required>
-        <mat-error
-          *ngIf="isControlInvalid('firstName')"
-          class="validation"
+          <mat-label>Фамилия</mat-label>
+          <input
+            matInput
+            formControlName="lastName"
+            required>
+          <mat-error
+            *ngIf="isControlInvalid('lastName')"
+            class="validation"
+          >
+          {{ getControlError('firstName') }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="width-field"
+          appearance="legacy"
         >
-        {{ getControlError('firstName') }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field
-        class="width-field"
-        appearance="legacy"
-      >
-        <mat-label>Отчество</mat-label>
-        <input
-          matInput
-          formControlName="middleName"
-          required>
-        <mat-error
-          *ngIf="isControlInvalid('middleName')"
-          class="validation"
+          <mat-label>Имя</mat-label>
+          <input
+            matInput
+            formControlName="firstName"
+            required>
+          <mat-error
+            *ngIf="isControlInvalid('firstName')"
+            class="validation"
+          >
+          {{ getControlError('firstName') }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="width-field"
+          appearance="legacy"
         >
-        {{ getControlError('middleName') }}
-        </mat-error>
-      </mat-form-field>
+          <mat-label>Отчество</mat-label>
+          <input
+            matInput
+            formControlName="middleName"
+            required>
+          <mat-error
+            *ngIf="isControlInvalid('middleName')"
+            class="validation"
+          >
+          {{ getControlError('middleName') }}
+          </mat-error>
+        </mat-form-field>
 
-      <div formArrayName="cars">
-        <button
-          mat-stroked-button
-          (click)="addCar()"
-          color="primary"
-        >
-        Добавить автомобиль
-        </button>
-
-        <div
-          *ngFor="let car of cars().controls; let i=index"
-          [formGroupName]="i"
-        >
-          <mat-form-field
-            class="margin-left--16 width--18 margit-right--10"
-            appearance="legacy"
-          >
-            <mat-label>Номер</mat-label>
-            <input
-              matInput
-              [formControl]="$any(car).get('number')"
-              required
-            >
-          </mat-form-field>
-          <mat-form-field
-            class="width--18 margit-right--10"
-            appearance="legacy"
-          >
-            <mat-label>Марка</mat-label>
-            <input
-              matInput
-              [formControl]="$any(car).get('brand')"
-              required
-            >
-          </mat-form-field>
-          <mat-form-field
-            class="width--18 margit-right--10"
-            appearance="legacy"
-          >
-            <mat-label>Модель</mat-label>
-            <input
-              matInput
-              [formControl]="$any(car).get('model')"
-              required
-            >
-          </mat-form-field>
-          <mat-form-field
-            class="width--18 margit-right--10"
-            appearance="legacy"
-          >
-            <mat-label>Год</mat-label>
-            <input
-              matInput
-              [formControl]="$any(car).get('year')"
-              required
-            >
-          </mat-form-field>
+        <div formArrayName="cars">
           <button
-              mat-button
-              color="warn"
-              (click)="removeCar(i)"
+            mat-stroked-button
+            (click)="addCar()"
+            color="primary"
+          >
+          Добавить автомобиль
+          </button>
+
+          <div
+            *ngFor="let car of cars().controls; let i=index"
+            [formGroupName]="i"
+          >
+            <mat-form-field
+              class="margin-left--16 width--18 margit-right--10"
+              appearance="legacy"
             >
-            Видалити
-            </button>
+              <mat-label>Номер</mat-label>
+              <input
+                matInput
+                [formControl]="$any(car).get('number')"
+                required
+              >
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Марка</mat-label>
+              <input
+                matInput
+                [formControl]="$any(car).get('brand')"
+                required
+              >
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Модель</mat-label>
+              <input
+                matInput
+                [formControl]="$any(car).get('model')"
+                required
+              >
+            </mat-form-field>
+            <mat-form-field
+              class="width--18 margit-right--10"
+              appearance="legacy"
+            >
+              <mat-label>Год</mat-label>
+              <input
+                matInput
+                [formControl]="$any(car).get('year')"
+                required
+              >
+            </mat-form-field>
+            <button
+                mat-button
+                color="warn"
+                (click)="removeCar(i)"
+              >
+              Видалити
+              </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
 
-    <mat-card-actions class="flex-button">
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="submit()"
-        (click)="form.reset()"
-        [disabled]="cruForm.invalid"
-      >
-      Добавить
-      </button>
-      <button
-        mat-flat-button
-        color="warn"
-        (click)="form.reset()"
-      >
-      Очистить
-      </button>
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="form.reset()"
-        routerLink="/records"
-      >
-      Назад
-      </button>
-    </mat-card-actions>
+      <mat-card-actions class="flex-button">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="submit()"
+          (click)="form.reset()"
+          [disabled]="cruForm.invalid"
+        >
+        Добавить
+        </button>
+        <button
+          mat-flat-button
+          color="warn"
+          (click)="form.reset()"
+        >
+        Очистить
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="form.reset()"
+          routerLink="/records"
+        >
+        Назад
+        </button>
+      </mat-card-actions>
 
-  </mat-card>
-</div>
+    </mat-card>
+
+  </ng-template>
+
+    <div *ngIf="currentCarOwner; else add">
+      <mat-card class="card">
+
+        <h1 class="align-center">Текущий владелец автомобиля</h1>
+
+        <hr>
+
+        <!-- <span>{{currentCarOwner.firstName}}</span>
+        <span>{{currentCarOwner.lastName}}</span>
+        <span>{{currentCarOwner.id}}</span>
+        <span>{{currentCarOwner.cars[0].model}}</span> -->
+
+        <form
+          [formGroup]="cruForm"
+          class="flex-form"
+          #form
+        >
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Фамилия</mat-label>
+            <input
+              matInput
+              formControlName="lastName"
+              [readonly]="!editable"
+            >
+            <!-- [ngModel]="carOwner.lastName" -->
+          </mat-form-field>
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Имя</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              [readonly]="!editable"
+            >
+          </mat-form-field>
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Отчество</mat-label>
+            <input
+              matInput
+              formControlName="middleName"
+              [readonly]="!editable"
+            >
+          </mat-form-field>
+
+          <div formArrayName="cars">
+            <div
+              *ngFor="let car of cars().controls; let i=index"
+              [formGroupName]="i"
+              class="flex-cars-fields-viewing"
+            >
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Номер</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('number')"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Марка</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('brand')"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Модель</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('model')"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Год</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('year')"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+        </form>
+
+        <mat-card-actions class="flex-button-viewing">
+          <button
+            mat-flat-button
+            color="primary"
+            routerLink="/records"
+          >
+          Назад
+          </button>
+        </mat-card-actions>
+
+      </mat-card>
+    </div>
+  </div>
