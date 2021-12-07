@@ -14,8 +14,13 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
   cruForm: any;
   currentCarOwner: CarOwner | undefined;
+  // private ccarOwnerId: number = 0;
   editable: boolean = false;
-  private subscription : Subscription = new Subscription();
+  // hidden: boolean = false;
+  hiddenTemplateEdit: boolean = false;
+  hiddenTemplateView: boolean = false;
+  private subscription: Subscription = new Subscription();
+  // currentRouterLink: String = '';
 
   constructor(
     private router: Router,
@@ -25,6 +30,9 @@ export class CruFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // this.hiddenTemplateEdit = false;
+    // this.hiddenTemplateView = false;
+
     this.cruForm = this.fb.group ({
       lastName: new FormControl('',
         [Validators.required],
@@ -40,17 +48,50 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
     const carOwnerId = +this.route.snapshot.params.id;
 
+
+
+
+    // switch(this.router.url) {
+    //   case '/record/12':
+    //     console.log(this.router.url);
+    //     console.log(`/record/${id}`);
+    //   this.hiddenTemplateEdit = true;
+    //   break;
+    //   case `/record/${id}/edit`:
+    //   this.hiddenTemplateAdd = true;
+    //   break;
+    //   default:
+    // };
+
     if (carOwnerId) {
+
       this.subscription.add(this.getCarOwnerById(carOwnerId));
+      this.isActiveRouter(carOwnerId);
+
+
+
     } else {
+
       this.addCar();
     }
 
+
+
   }
+
+  // ngAfterViewInit() {
+  //   this.hiddenTemplateEdit = false;
+  //   this.hiddenTemplateView = false;
+  //   const id: any = this.currentCarOwner?.id;
+  //   this.isActiveRouter(this.ccarOwnerId);
+  // }
 
   private getCarOwnerById(id: number): void {
     this.carOwnerService.getCarOwnerById(id).subscribe((record: CarOwner) => {
       this.currentCarOwner = record;
+      // this.isActiveRouter(id);
+      // this.hiddenTemplateEdit = true;
+      // this.hiddenTemplateAdd = true;
       this.setCarOwnerFormFields();
       this.setCarsFormFields();
     });
@@ -73,6 +114,23 @@ export class CruFormComponent implements OnInit, OnDestroy {
         formCarsControls.year.value = item.year;
     });
   }
+
+  private isActiveRouter(id: number): void {
+    if (this.router.url === `/records/${id}/edit`) {
+      this.hiddenTemplateView = true;
+    }
+     else {
+      this.hiddenTemplateEdit = true;
+    }
+  }
+
+  // isActiveRouter(id: number): boolean {
+  //   if (this.router.url === `/records/${this.currentCarOwner?.id}/edit`) {
+  //     return true;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   cars(): FormArray {
     return this.cruForm.get('cars') as FormArray;
@@ -125,6 +183,8 @@ export class CruFormComponent implements OnInit, OnDestroy {
     //   this.router.navigate(['/posts', response.id]);
     // });
   }
+
+
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

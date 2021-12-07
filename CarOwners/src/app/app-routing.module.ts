@@ -14,6 +14,9 @@ const routes: Routes = [
   },
   {
     path: 'records/:id', component: CruFormComponent
+  },
+  {
+    path: 'records/:id/edit', component: CruFormComponent
   }
 ];
 

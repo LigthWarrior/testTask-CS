@@ -1,11 +1,9 @@
 <div class="wrapper">
+  <!-- <span [routerLink]="['/records', currentCarOwner?.id]" routerLinkActive="hide">Test Test Test Test</span> -->
   <ng-template #add>
     <mat-card class="card">
-
-      <h1 class="align-center">Владелец автомобиля</h1>
-
+      <h1 class="align-center">Добавить владельца</h1>
       <hr>
-
       <form
         [formGroup]="cruForm"
         class="flex-form"
@@ -127,7 +125,6 @@
           </div>
         </div>
       </form>
-
       <mat-card-actions class="flex-button">
         <button
           mat-flat-button
@@ -154,23 +151,14 @@
         Назад
         </button>
       </mat-card-actions>
-
     </mat-card>
-
   </ng-template>
 
-    <div *ngIf="currentCarOwner; else add">
+  <ng-container *ngIf="currentCarOwner; else add">
+    <ng-container *ngIf="!hiddenTemplateView">
       <mat-card class="card">
-
-        <h1 class="align-center">Текущий владелец автомобиля</h1>
-
+        <h1 class="align-center">Просмотр</h1>
         <hr>
-
-        <!-- <span>{{currentCarOwner.firstName}}</span>
-        <span>{{currentCarOwner.lastName}}</span>
-        <span>{{currentCarOwner.id}}</span>
-        <span>{{currentCarOwner.cars[0].model}}</span> -->
-
         <form
           [formGroup]="cruForm"
           class="flex-form"
@@ -210,7 +198,6 @@
               [readonly]="!editable"
             >
           </mat-form-field>
-
           <div formArrayName="cars">
             <div
               *ngFor="let car of cars().controls; let i=index"
@@ -225,6 +212,7 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('number')"
+                  [readonly]="!editable"
                 >
               </mat-form-field>
               <mat-form-field
@@ -235,6 +223,7 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('brand')"
+                  [readonly]="!editable"
                 >
               </mat-form-field>
               <mat-form-field
@@ -245,6 +234,7 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('model')"
+                  [readonly]="!editable"
                 >
               </mat-form-field>
               <mat-form-field
@@ -255,13 +245,12 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('year')"
+                  [readonly]="!editable"
                 >
               </mat-form-field>
             </div>
           </div>
-
         </form>
-
         <mat-card-actions class="flex-button-viewing">
           <button
             mat-flat-button
@@ -271,7 +260,114 @@
           Назад
           </button>
         </mat-card-actions>
-
       </mat-card>
-    </div>
-  </div>
+    </ng-container>
+    <ng-container *ngIf="!hiddenTemplateEdit">
+      <mat-card class="card">
+        <h1 class="align-center">Редактировать</h1>
+        <hr>
+        <form
+          [formGroup]="cruForm"
+          class="flex-form"
+          #form
+        >
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Фамилия</mat-label>
+            <input
+              matInput
+              formControlName="lastName"
+              [readonly]="!editable"
+            >
+            <!-- [ngModel]="carOwner.lastName" -->
+          </mat-form-field>
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Имя</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              [readonly]="!editable"
+            >
+          </mat-form-field>
+          <mat-form-field
+            class="width-field"
+            appearance="legacy"
+          >
+            <mat-label>Отчество</mat-label>
+            <input
+              matInput
+              formControlName="middleName"
+              [readonly]="!editable"
+            >
+          </mat-form-field>
+          <div formArrayName="cars">
+            <div
+              *ngFor="let car of cars().controls; let i=index"
+              [formGroupName]="i"
+              class="flex-cars-fields-viewing"
+            >
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Номер</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('number')"
+                  [readonly]="!editable"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Марка</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('brand')"
+                  [readonly]="!editable"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Модель</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('model')"
+                  [readonly]="!editable"
+                >
+              </mat-form-field>
+              <mat-form-field
+                class="width--18 margit-right--10"
+                appearance="legacy"
+              >
+                <mat-label>Год</mat-label>
+                <input
+                  matInput
+                  [formControl]="$any(car).get('year')"
+                  [readonly]="!editable"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <mat-card-actions class="flex-button-viewing">
+          <button
+            mat-flat-button
+            color="primary"
+            routerLink="/records"
+          >
+          Назад
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+<div>

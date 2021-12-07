@@ -12,15 +12,17 @@
     <button
         mat-raised-button
         [disabled]="isDisabledButton"
-        (click)="showRecord()"
         [routerLink]="['/records', currentCarOwnerId]"
         class="demo-button">
       Просмотр
     </button>
+    <!-- (click)="showRecord()"
+      [routerLink]="['/records/:id/edit', currentCarOwnerId]"
+    (click)="editRecord()" -->
     <button
         mat-raised-button
         [disabled]="isDisabledButton"
-
+        [routerLink]="['/records', currentCarOwnerId, 'edit']"
         class="demo-button">
       Редактировать
     </button>
