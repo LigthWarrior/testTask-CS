@@ -52,10 +52,10 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
   //   this.table.renderRows();
   // }
 
-  removeData(): void {
-    this.dataSource.pop();
-    this.table.renderRows();
-  }
+  // removeData(): void {
+  //   this.dataSource.pop();
+  //   this.table.renderRows();
+  // }
 
   clickOnRows(event: Event): void {
 
@@ -83,8 +83,10 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
   //   this.getCarOwnerById(this.currentCarOwnerId);
   // }
 
-  editRecord(): void {
-    // this.router.navigate("['/records', currentCarOwnerId]");
+  deleteRecord(): void {
+    this.carOwnersService.deleteCarOwner(this.currentCarOwnerId).subscribe(() => {
+      this.getCarOwners();
+    });
   }
 
   ngOnDestroy(): void {

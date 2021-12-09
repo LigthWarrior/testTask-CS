@@ -306,20 +306,27 @@
             >
           </mat-form-field>
           <div formArrayName="cars">
+            <button
+              mat-stroked-button
+              (click)="addCar()"
+              color="primary"
+            >
+            Добавить автомобиль
+            </button>
+
             <div
               *ngFor="let car of cars().controls; let i=index"
               [formGroupName]="i"
-              class="flex-cars-fields-viewing"
             >
               <mat-form-field
-                class="width--18 margit-right--10"
+                class="margin-left--16 width--18 margit-right--10"
                 appearance="legacy"
               >
                 <mat-label>Номер</mat-label>
                 <input
                   matInput
                   [formControl]="$any(car).get('number')"
-                  [readonly]="!editable"
+                  required
                 >
               </mat-form-field>
               <mat-form-field
@@ -330,7 +337,7 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('brand')"
-                  [readonly]="!editable"
+                  required
                 >
               </mat-form-field>
               <mat-form-field
@@ -341,7 +348,7 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('model')"
-                  [readonly]="!editable"
+                  required
                 >
               </mat-form-field>
               <mat-form-field
@@ -352,16 +359,33 @@
                 <input
                   matInput
                   [formControl]="$any(car).get('year')"
-                  [readonly]="!editable"
+                  required
                 >
               </mat-form-field>
+              <button
+                  mat-button
+                  color="warn"
+                  (click)="removeCar(i)"
+                >
+                Видалити
+                </button>
             </div>
           </div>
         </form>
-        <mat-card-actions class="flex-button-viewing">
+        <mat-card-actions class="flex-button">
           <button
             mat-flat-button
             color="primary"
+            (click)="save()"
+            (click)="form.reset()"
+            [disabled]="cruForm.invalid"
+          >
+          Сохранить
+          </button>
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="form.reset()"
             routerLink="/records"
           >
           Назад

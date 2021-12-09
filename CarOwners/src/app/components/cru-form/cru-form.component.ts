@@ -14,6 +14,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
   cruForm: any;
   currentCarOwner: CarOwner | undefined;
+  currentCarOwnerId: number = 0;
   // private ccarOwnerId: number = 0;
   editable: boolean = false;
   // hidden: boolean = false;
@@ -64,7 +65,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
     // };
 
     if (carOwnerId) {
-
+      this.currentCarOwnerId = carOwnerId;
       this.subscription.add(this.getCarOwnerById(carOwnerId));
       this.isActiveRouter(carOwnerId);
 
@@ -167,6 +168,23 @@ export class CruFormComponent implements OnInit, OnDestroy {
     return null;
   }
 
+  save(): void {
+    if (this.cruForm.invalid) {
+      return;
+    }
+
+    let jsonData = this.cruForm.value;
+    jsonData.id = this.currentCarOwnerId;
+
+
+
+
+    this.carOwnerService.editCarOwner(this.currentCarOwnerId, jsonData).subscribe(() => {
+      // console.log(response);
+      this.router.navigate(['/records']);
+    });
+  }
+
   submit(): void {
     if (this.cruForm.invalid) {
       return;
@@ -174,8 +192,8 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
     const jsonData = this.cruForm.value;
 
-    this.carOwnerService.createOwner(jsonData).subscribe((response: CarOwner) => {
-      console.log(response);
+    this.carOwnerService.createOwner(jsonData).subscribe(() => {
+      // console.log(response);
       this.router.navigate(['/records']);
     });
 
@@ -183,8 +201,6 @@ export class CruFormComponent implements OnInit, OnDestroy {
     //   this.router.navigate(['/posts', response.id]);
     // });
   }
-
-
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
