@@ -12,7 +12,8 @@ export class CarOwnersService {
 
   constructor(private http: HttpClient) { }
 
-  ROOT_URL = '/api/carOwners';
+  ROOT_URL: string = '/api/carOwners';
+  currentId: number = 0;
 
   getCarOwners(): Observable<CarOwner[]> {
     return this.http.get<CarOwner[]>(this.ROOT_URL).pipe(
@@ -21,6 +22,7 @@ export class CarOwnersService {
   }
 
   getCarOwnerById(id: number): Observable<CarOwner> {
+    this.currentId = id;
     const URL = `${this.ROOT_URL}/${id}`;
     return this.http.get<CarOwner>(URL).pipe(
       map((carOwner: CarOwner) => carOwner),
@@ -33,14 +35,14 @@ export class CarOwnersService {
     return this.http.post<CarOwner>(this.ROOT_URL, data);
   }
 
-  editCarOwner(id: number, carOwner: CarOwner): Observable<CarOwner> {
-    const URL = `${this.ROOT_URL}/${id}`;
+  editCarOwner(carOwner: CarOwner): Observable<CarOwner> {
+    const URL = `${this.ROOT_URL}/${this.currentId}`;
     // const body = JSON.stringify(data);
-    const httpOptions = {
-      headers: new HttpHeaders({
-       'Content-Type':  'application/json',
-      }),
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //    'Content-Type':  'application/json',
+    //   }),
+    // };
 
     // const headers = new Headers({
     //    'Content-Type':  'application/json',
@@ -56,19 +58,19 @@ export class CarOwnersService {
 
 
 
-    return this.http.put<CarOwner>(URL, carOwner, httpOptions);
+    return this.http.put<CarOwner>(URL, carOwner);
   }
 
-  deleteCarOwner(id: number): Observable<CarOwner> {
+  deleteCarOwner(id: number): Observable<CarOwner[]> {
     const URL = `${this.ROOT_URL}/${id}`;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-       'Content-Type':  'application/json',
-      }),
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //    'Content-Type':  'application/json',
+    //   }),
+    // };
 
-    return this.http.delete<CarOwner>(URL, httpOptions).pipe(
+    return this.http.delete<CarOwner[]>(URL).pipe(
       tap(_ => console.log(`deleted owner id=${id}`)),
     );
   }

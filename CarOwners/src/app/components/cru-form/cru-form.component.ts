@@ -22,6 +22,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
   hiddenTemplateView: boolean = false;
   private subscription: Subscription = new Subscription();
   // currentRouterLink: String = '';
+  // isCar: boolean = false;
 
   constructor(
     private router: Router,
@@ -31,52 +32,28 @@ export class CruFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.hiddenTemplateEdit = false;
-    // this.hiddenTemplateView = false;
-
     this.cruForm = this.fb.group ({
-      lastName: new FormControl('',
-        [Validators.required],
-      ),
-      firstName: new FormControl('',
-        [Validators.required],
-      ),
-      middleName: new FormControl('',
-        [Validators.required],
-      ),
+      lastName: new FormControl('', [
+        Validators.required,
+      ]),
+      firstName: new FormControl('', [
+        Validators.required,
+      ]),
+      middleName: new FormControl('', [
+        Validators.required,
+      ]),
       cars: this.fb.array([]),
     });
 
     const carOwnerId = +this.route.snapshot.params.id;
 
-
-
-
-    // switch(this.router.url) {
-    //   case '/record/12':
-    //     console.log(this.router.url);
-    //     console.log(`/record/${id}`);
-    //   this.hiddenTemplateEdit = true;
-    //   break;
-    //   case `/record/${id}/edit`:
-    //   this.hiddenTemplateAdd = true;
-    //   break;
-    //   default:
-    // };
-
     if (carOwnerId) {
       this.currentCarOwnerId = carOwnerId;
       this.subscription.add(this.getCarOwnerById(carOwnerId));
       this.isActiveRouter(carOwnerId);
-
-
-
     } else {
-
       this.addCar();
     }
-
-
 
   }
 
@@ -90,9 +67,6 @@ export class CruFormComponent implements OnInit, OnDestroy {
   private getCarOwnerById(id: number): void {
     this.carOwnerService.getCarOwnerById(id).subscribe((record: CarOwner) => {
       this.currentCarOwner = record;
-      // this.isActiveRouter(id);
-      // this.hiddenTemplateEdit = true;
-      // this.hiddenTemplateAdd = true;
       this.setCarOwnerFormFields();
       this.setCarsFormFields();
     });
@@ -119,19 +93,10 @@ export class CruFormComponent implements OnInit, OnDestroy {
   private isActiveRouter(id: number): void {
     if (this.router.url === `/records/${id}/edit`) {
       this.hiddenTemplateView = true;
-    }
-     else {
+    } else {
       this.hiddenTemplateEdit = true;
     }
   }
-
-  // isActiveRouter(id: number): boolean {
-  //   if (this.router.url === `/records/${this.currentCarOwner?.id}/edit`) {
-  //     return true;
-  //   } else {
-  //     return true;
-  //   }
-  // }
 
   cars(): FormArray {
     return this.cruForm.get('cars') as FormArray;
@@ -139,10 +104,19 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
   newCar(): FormGroup {
     return new FormGroup ({
-      number: new FormControl(''),
-      brand: new FormControl(''),
-      model: new FormControl(''),
-      year: new FormControl(''),
+      number: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[A-Z]{2}[0-9]{4}[A-Z]{2}$/),
+      ]),
+      brand: new FormControl('', [
+        Validators.required,
+      ]),
+      model: new FormControl('', [
+        Validators.required,
+      ]),
+      year: new FormControl('', [
+        Validators.required,
+      ]),
     });
   }
 
@@ -176,11 +150,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
     let jsonData = this.cruForm.value;
     jsonData.id = this.currentCarOwnerId;
 
-
-
-
-    this.carOwnerService.editCarOwner(this.currentCarOwnerId, jsonData).subscribe(() => {
-      // console.log(response);
+    this.carOwnerService.editCarOwner(jsonData).subscribe(() => {
       this.router.navigate(['/records']);
     });
   }
@@ -193,13 +163,9 @@ export class CruFormComponent implements OnInit, OnDestroy {
     const jsonData = this.cruForm.value;
 
     this.carOwnerService.createOwner(jsonData).subscribe(() => {
-      // console.log(response);
       this.router.navigate(['/records']);
     });
 
-    // this.carOwnerService.createOwner(jsonData).subscribe((response: CarOwner) => {
-    //   this.router.navigate(['/posts', response.id]);
-    // });
   }
 
   ngOnDestroy(): void {

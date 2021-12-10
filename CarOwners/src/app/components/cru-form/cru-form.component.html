@@ -80,6 +80,7 @@
                 matInput
                 [formControl]="$any(car).get('number')"
                 required
+                pattern
               >
             </mat-form-field>
             <mat-form-field
@@ -131,7 +132,7 @@
           color="primary"
           (click)="submit()"
           (click)="form.reset()"
-          [disabled]="cruForm.invalid"
+          [disabled]="(cars().controls.length === 0) || cruForm.invalid"
         >
         Добавить
         </button>
@@ -378,7 +379,7 @@
             color="primary"
             (click)="save()"
             (click)="form.reset()"
-            [disabled]="cruForm.invalid"
+            [disabled]="(cars().controls.length === 0) || cruForm.invalid"
           >
           Сохранить
           </button>
