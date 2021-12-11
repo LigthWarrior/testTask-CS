@@ -29,7 +29,7 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
   }
 
   private getCarOwners(): Subscription {
-    return this.carOwnersService.getCarOwners().subscribe((records: any) => {
+    return this.carOwnersService.getCarOwners().subscribe((records: CarOwner[]) => {
       this.dataSource = this.carOwners = records;
     });
   }

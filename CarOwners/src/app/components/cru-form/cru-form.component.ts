@@ -11,7 +11,6 @@ import { CarOwner } from '../../types';
   styleUrls: ['./cru-form.component.css']
 })
 export class CruFormComponent implements OnInit, OnDestroy {
-
   cruForm: any;
   currentCarOwner: CarOwner | undefined;
   currentCarOwnerId: number = 0;
@@ -23,6 +22,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   // currentRouterLink: String = '';
   // isCar: boolean = false;
+  years: number[] = [];
 
   constructor(
     private router: Router,
@@ -45,6 +45,8 @@ export class CruFormComponent implements OnInit, OnDestroy {
       cars: this.fb.array([]),
     });
 
+    this.setRangeYears();
+
     const carOwnerId = +this.route.snapshot.params.id;
 
     if (carOwnerId) {
@@ -57,12 +59,12 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
   }
 
-  // ngAfterViewInit() {
-  //   this.hiddenTemplateEdit = false;
-  //   this.hiddenTemplateView = false;
-  //   const id: any = this.currentCarOwner?.id;
-  //   this.isActiveRouter(this.ccarOwnerId);
-  // }
+  private setRangeYears(): void {
+    const currentYear = new Date().getFullYear();
+    for (let i = 1990; i <= currentYear; i++) {
+      this.years.push(i);
+    }
+  }
 
   private getCarOwnerById(id: number): void {
     this.carOwnerService.getCarOwnerById(id).subscribe((record: CarOwner) => {
@@ -141,6 +143,10 @@ export class CruFormComponent implements OnInit, OnDestroy {
     }
     return null;
   }
+
+  // isUniqueNumber(fieldName: string): boolean {
+  //   if ()
+  // }
 
   save(): void {
     if (this.cruForm.invalid) {

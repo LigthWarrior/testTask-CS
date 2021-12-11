@@ -82,6 +82,11 @@
                 required
                 pattern
               >
+              <mat-error
+                *ngIf="isUniqueNumber('number')"
+                class="validation"
+              >
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               class="width--18 margit-right--10"
@@ -110,11 +115,17 @@
               appearance="legacy"
             >
               <mat-label>Год</mat-label>
-              <input
-                matInput
+              <mat-select
                 [formControl]="$any(car).get('year')"
                 required
               >
+                <mat-option
+                  *ngFor="let year of years"
+                  [value]="year"
+                >
+                {{ year }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
             <button
                 mat-button
@@ -328,6 +339,7 @@
                   matInput
                   [formControl]="$any(car).get('number')"
                   required
+                  pattern
                 >
               </mat-form-field>
               <mat-form-field
@@ -357,11 +369,17 @@
                 appearance="legacy"
               >
                 <mat-label>Год</mat-label>
-                <input
-                  matInput
+                <mat-select
                   [formControl]="$any(car).get('year')"
                   required
                 >
+                  <mat-option
+                    *ngFor="let year of years"
+                    [value]="year"
+                  >
+                  {{ year }}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
               <button
                   mat-button
