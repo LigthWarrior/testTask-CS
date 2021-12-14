@@ -1,11 +1,9 @@
-<!-- (click)="addData()" -->
 <div class="wrapper">
-  <div class="demo-button-container">
+  <div class="button-container">
     <button
       mat-raised-button
       routerLink="record"
-
-      class="demo-button"
+      class="button"
     >
       Добавить
     </button>
@@ -13,48 +11,43 @@
         mat-raised-button
         [disabled]="isDisabledButton"
         [routerLink]="['/records', currentCarOwnerId]"
-        class="demo-button">
+        class="button">
       Просмотр
     </button>
-    <!-- (click)="showRecord()"
-      [routerLink]="['/records/:id/edit', currentCarOwnerId]"
-    (click)="editRecord()" -->
     <button
         mat-raised-button
         [disabled]="isDisabledButton"
         [routerLink]="['/records', currentCarOwnerId, 'edit']"
-        class="demo-button">
+        class="button">
       Редактировать
     </button>
     <button
         mat-raised-button
         [disabled]="isDisabledButton"
         (click)="deleteRecord()"
-        class="demo-button">
+        class="button">
       Удалить
     </button>
   </div>
 
-
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-
+  <table mat-table [dataSource]="carOwners" class="mat-elevation-z8 table">
     <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef> Фамилия </th>
+      <th mat-header-cell *matHeaderCellDef class="rows-width"> Фамилия </th>
       <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef> Имя </th>
+      <th mat-header-cell *matHeaderCellDef class="rows-width"> Имя </th>
       <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="middleName">
-      <th mat-header-cell *matHeaderCellDef> Отчество </th>
+      <th mat-header-cell *matHeaderCellDef class="rows-width"> Отчество </th>
       <td mat-cell *matCellDef="let element"> {{element.middleName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="cars">
-      <th mat-header-cell *matHeaderCellDef> Колличество автомобилей </th>
+      <th mat-header-cell *matHeaderCellDef class="rows-width"> Колличество автомобилей </th>
       <td mat-cell *matCellDef="let element"> {{element.cars.length}} </td>
     </ng-container>
 
@@ -65,10 +58,4 @@
       *matRowDef="let row; columns: displayedColumns;"
     ></tr>
   </table>
-
 </div>
-
-<!-- [class.demo-row-is-clicked]="clickedRows.has(row)" -->
-<!-- (click)="clickedRows.add(row)" -->
-<!-- [class.demo-row-is-clicked]="!isDisabledButton" -->
-

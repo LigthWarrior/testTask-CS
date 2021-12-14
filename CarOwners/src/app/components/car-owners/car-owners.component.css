@@ -4,15 +4,19 @@
   margin: 0 auto;
 }
 
-.demo-table {
+table {
   width: 100%;
 }
 
-.demo-button-container {
+.rows-width {
+  width: 25%;
+}
+
+.button-container {
   padding-bottom: 16px;
 }
 
-.demo-button + .demo-button {
+.button + .button {
   margin-left: 8px;
 }
 
@@ -26,6 +30,6 @@
   border-color: currentColor;
 }
 
-.demo-row-is-clicked {
+.row-is-clicked {
   font-weight: bold;
 }

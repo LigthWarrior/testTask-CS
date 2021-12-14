@@ -23,6 +23,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
   // currentRouterLink: String = '';
   // isCar: boolean = false;
   years: number[] = [];
+  private carsNumberAll: string[] = [];
 
   constructor(
     private router: Router,
@@ -46,6 +47,7 @@ export class CruFormComponent implements OnInit, OnDestroy {
     });
 
     this.setRangeYears();
+    this.setCarsNumber();
 
     const carOwnerId = +this.route.snapshot.params.id;
 
@@ -71,6 +73,12 @@ export class CruFormComponent implements OnInit, OnDestroy {
       this.currentCarOwner = record;
       this.setCarOwnerFormFields();
       this.setCarsFormFields();
+    });
+  }
+
+  private setCarsNumber(): void {
+    this.carOwnerService.getCarOwners().subscribe((records: CarOwner[]) => {
+      records.map(item => item.cars.forEach(item => this.carsNumberAll.push(item.number)));
     });
   }
 
@@ -144,9 +152,19 @@ export class CruFormComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  // isUniqueNumber(fieldName: string): boolean {
-  //   if ()
-  // }
+  isUniqueNumber(): boolean | null {
+    const data = this.cruForm.value.cars[0].number;
+
+    // console.log(this.carsNumberAll.includes(data));
+
+    // console.log(data);
+
+    if (data !== undefined) {
+      return this.carsNumberAll.includes(data);
+    } else {
+      return null;
+    }
+  }
 
   save(): void {
     if (this.cruForm.invalid) {

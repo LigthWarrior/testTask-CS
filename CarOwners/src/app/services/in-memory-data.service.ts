@@ -6,9 +6,6 @@ import { CarOwner } from '../types';
   providedIn: 'root'
 })
 export class InMemoryDataService implements InMemoryDbService {
-
-  constructor() { }
-
   createDb() {
       const carOwners = [
         {id: 11, lastName: 'Иванов', firstName: 'Иван', middleName: 'Иванович', cars: [

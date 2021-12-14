@@ -81,12 +81,8 @@
                 [formControl]="$any(car).get('number')"
                 required
                 pattern
+                [class.validation]="isUniqueNumber()"
               >
-              <mat-error
-                *ngIf="isUniqueNumber('number')"
-                class="validation"
-              >
-              </mat-error>
             </mat-form-field>
             <mat-form-field
               class="width--18 margit-right--10"
@@ -143,7 +139,7 @@
           color="primary"
           (click)="submit()"
           (click)="form.reset()"
-          [disabled]="(cars().controls.length === 0) || cruForm.invalid"
+          [disabled]="(cars().controls.length === 0) || cruForm.invalid || isUniqueNumber()"
         >
         Добавить
         </button>

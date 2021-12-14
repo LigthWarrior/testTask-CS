@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CarOwner } from '../../types';
 import { CarOwnersService } from '../../services';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-car-owners',
@@ -11,18 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./car-owners.component.css']
 })
 export class CarOwnersComponent implements OnInit, OnDestroy {
-
   isDisabledButton: boolean = true;
-  private carOwners: CarOwner[] = [];
+  carOwners: CarOwner[] = [];
   private subscription: Subscription = new Subscription();
   currentCarOwnerId: number = 0;
-  // currentCarOwner: CarOwner | undefined;
+  displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
 
-
-  constructor(
-    private carOwnersService: CarOwnersService,
-    private router: Router,
-    ) { }
+  constructor(private carOwnersService: CarOwnersService) { }
 
   ngOnInit(): void {
     this.subscription.add(this.getCarOwners());
@@ -30,58 +23,47 @@ export class CarOwnersComponent implements OnInit, OnDestroy {
 
   private getCarOwners(): Subscription {
     return this.carOwnersService.getCarOwners().subscribe((records: CarOwner[]) => {
-      this.dataSource = this.carOwners = records;
+      this.carOwners = records;
     });
   }
 
-  // private getCarOwnerById(currentCarOwnerId: number): Subscription {
-  //   return this.carOwnersService.getCarOwnerById(currentCarOwnerId).subscribe((record: CarOwner) => {
-  //     this.currentCarOwner = record;
-  //   });
-  // }
+  // dataSource: CarOwner[] = [];
+  // @ViewChild(MatTable) table: any;
 
-  displayedColumns: string[] = ['lastName', 'firstName', 'middleName', 'cars'];
-  dataSource: CarOwner[] = [];
-  // clickedRows = new Set<CarOwner[]>();
+  private returnToStartState(): void {
+    const trNodes: any = document.getElementsByTagName("tr");
 
-  @ViewChild(MatTable) table: any;
+    for (let tr of trNodes) {
+      tr.classList.remove("row-is-clicked");
+    }
 
-  // addData(): void {
-  //   const randomElementIndex = Math.floor(Math.random() * this.carOwners.length);
-  //   this.dataSource.push(this.carOwners[randomElementIndex]);
-  //   this.table.renderRows();
-  // }
-
-  // removeData(): void {
-  //   this.dataSource.pop();
-  //   this.table.renderRows();
-  // }
+    this.isDisabledButton = true;
+  }
 
   clickOnRows(event: Event): void {
+    this.returnToStartState();
 
-    // if (true) {
-    //   document.onclick = ((e) => {
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    //   });
-    // }
+    this.isDisabledButton = false;
 
-    this.isDisabledButton = (this.isDisabledButton === true) ? false : true;
-    // ???
-    let body: any = event.currentTarget;
-    body.classList.toggle("demo-row-is-clicked");
+    let tableRow: any = event.currentTarget;
+    tableRow.classList.add("row-is-clicked");
 
-    const lastNameOnClick = body.firstElementChild.textContent.trim();
+    const lastNameOnClick = tableRow.firstElementChild.textContent.trim();
     const currentCarOwner = this.carOwners.find( item => item.lastName === lastNameOnClick);
     if (currentCarOwner?.id !== undefined) {
       this.currentCarOwnerId = currentCarOwner?.id;
     }
 
-  }
+    document.addEventListener('click', (event): void => {
+      const temp: any = event.target;
+      const tagOnClick = temp.tagName.toLowerCase();
 
-  // showRecord(): void {
-  //   this.getCarOwnerById(this.currentCarOwnerId);
-  // }
+      if (tagOnClick !== 'td') {
+        this.returnToStartState();
+      }
+    });
+
+  }
 
   deleteRecord(): void {
     this.carOwnersService.deleteCarOwner(this.currentCarOwnerId).subscribe(() => {
