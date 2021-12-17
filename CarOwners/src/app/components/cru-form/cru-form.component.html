@@ -1,5 +1,4 @@
 <div class="wrapper">
-  <!-- <span [routerLink]="['/records', currentCarOwner?.id]" routerLinkActive="hide">Test Test Test Test</span> -->
   <ng-template #add>
     <mat-card class="card">
       <h1 class="align-center">Добавить владельца</h1>
@@ -63,6 +62,7 @@
             mat-stroked-button
             (click)="addCar()"
             color="primary"
+            [disabled]="isEqualNumbers()"
           >
           Добавить автомобиль
           </button>
@@ -81,7 +81,7 @@
                 [formControl]="$any(car).get('number')"
                 required
                 pattern
-                [class.validation]="isUniqueNumber()"
+                [class.validation]="isUniqueNumbers(i) || isEqualNumbers()"
               >
             </mat-form-field>
             <mat-form-field
@@ -139,7 +139,9 @@
           color="primary"
           (click)="submit()"
           (click)="form.reset()"
-          [disabled]="(cars().controls.length === 0) || cruForm.invalid || isUniqueNumber()"
+          [disabled]="(cars().controls.length === 0)
+            || cruForm.invalid
+            || isEqualNumbers()"
         >
         Добавить
         </button>
@@ -182,7 +184,6 @@
               formControlName="lastName"
               [readonly]="!editable"
             >
-            <!-- [ngModel]="carOwner.lastName" -->
           </mat-form-field>
           <mat-form-field
             class="width-field"
@@ -289,7 +290,6 @@
               formControlName="lastName"
               [readonly]="!editable"
             >
-            <!-- [ngModel]="carOwner.lastName" -->
           </mat-form-field>
           <mat-form-field
             class="width-field"
@@ -318,6 +318,7 @@
               mat-stroked-button
               (click)="addCar()"
               color="primary"
+              [disabled]="isEqualNumbers()"
             >
             Добавить автомобиль
             </button>
@@ -325,6 +326,7 @@
             <div
               *ngFor="let car of cars().controls; let i=index"
               [formGroupName]="i"
+              #ff
             >
               <mat-form-field
                 class="margin-left--16 width--18 margit-right--10"
@@ -336,6 +338,7 @@
                   [formControl]="$any(car).get('number')"
                   required
                   pattern
+                  [class.validation]="isUniqueNumbers(i) || isEqualNumbers()"
                 >
               </mat-form-field>
               <mat-form-field
@@ -393,7 +396,9 @@
             color="primary"
             (click)="save()"
             (click)="form.reset()"
-            [disabled]="(cars().controls.length === 0) || cruForm.invalid"
+            [disabled]="(cars().controls.length === 0)
+              || cruForm.invalid
+              || isEqualNumbers()"
           >
           Сохранить
           </button>

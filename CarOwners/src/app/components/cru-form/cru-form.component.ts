@@ -14,16 +14,13 @@ export class CruFormComponent implements OnInit, OnDestroy {
   cruForm: any;
   currentCarOwner: CarOwner | undefined;
   currentCarOwnerId: number = 0;
-  // private ccarOwnerId: number = 0;
   editable: boolean = false;
-  // hidden: boolean = false;
   hiddenTemplateEdit: boolean = false;
   hiddenTemplateView: boolean = false;
   private subscription: Subscription = new Subscription();
-  // currentRouterLink: String = '';
-  // isCar: boolean = false;
   years: number[] = [];
   private carsNumberAll: string[] = [];
+  private carsNumberWithoutCurrentOwner: string[] = [];
 
   constructor(
     private router: Router,
@@ -53,19 +50,17 @@ export class CruFormComponent implements OnInit, OnDestroy {
 
     if (carOwnerId) {
       this.currentCarOwnerId = carOwnerId;
+      this.setCarsNumberWithoutCurrentOwner(carOwnerId);
       this.subscription.add(this.getCarOwnerById(carOwnerId));
       this.isActiveRouter(carOwnerId);
     } else {
       this.addCar();
     }
-
   }
 
   private setRangeYears(): void {
     const currentYear = new Date().getFullYear();
-    for (let i = 1990; i <= currentYear; i++) {
-      this.years.push(i);
-    }
+    for (let i = 1990; i <= currentYear; i++) this.years.push(i);
   }
 
   private getCarOwnerById(id: number): void {
@@ -79,6 +74,13 @@ export class CruFormComponent implements OnInit, OnDestroy {
   private setCarsNumber(): void {
     this.carOwnerService.getCarOwners().subscribe((records: CarOwner[]) => {
       records.map(item => item.cars.forEach(item => this.carsNumberAll.push(item.number)));
+    });
+  }
+
+  private setCarsNumberWithoutCurrentOwner(id: number): void {
+    this.carOwnerService.getCarOwners().subscribe((records: CarOwner[]) => {
+      const carOwnersWithoutCurrent = records.filter(item => item.id !== id);
+      carOwnersWithoutCurrent.map(item => item.cars.forEach(item => this.carsNumberWithoutCurrentOwner.push(item.number)));
     });
   }
 
@@ -152,24 +154,33 @@ export class CruFormComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  isUniqueNumber(): boolean | null {
-    const data = this.cruForm.value.cars[0].number;
+  isUniqueNumbers(index: number): boolean {
+    const carNumberValue = this.cruForm.value.cars[index].number;
 
-    // console.log(this.carsNumberAll.includes(data));
+    return (this.router.url === '/record')
+      ? this.carsNumberAll.includes(carNumberValue)
+      : this.carsNumberWithoutCurrentOwner.includes(carNumberValue);
+  }
 
-    // console.log(data);
+  isEqualNumbers(): boolean {
+    const carsNumberValue = this.cruForm.value.cars;
+    const carsNumberWithoutLast = [];
+    const results = [];
 
-    if (data !== undefined) {
-      return this.carsNumberAll.includes(data);
-    } else {
-      return null;
+    for (let index = 0; index < carsNumberValue.length - 1; index++) {
+      carsNumberWithoutLast.push(carsNumberValue[index].number);
     }
+
+    for (let number of carsNumberWithoutLast) {
+      if (carsNumberValue[carsNumberValue.length - 1].number === number) {
+        results.push(number);
+      }
+    }
+    return (results.length !== 0) ? true : false;
   }
 
   save(): void {
-    if (this.cruForm.invalid) {
-      return;
-    }
+    if (this.cruForm.invalid) return;
 
     let jsonData = this.cruForm.value;
     jsonData.id = this.currentCarOwnerId;
@@ -180,20 +191,16 @@ export class CruFormComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    if (this.cruForm.invalid) {
-      return;
-    }
+    if (this.cruForm.invalid) return;
 
     const jsonData = this.cruForm.value;
 
     this.carOwnerService.createOwner(jsonData).subscribe(() => {
       this.router.navigate(['/records']);
     });
-
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }
