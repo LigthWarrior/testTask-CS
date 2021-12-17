@@ -1,0 +1,35 @@
+.wrapper {
+  max-width: 1280px;
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+table {
+  width: 100%;
+}
+
+.rows-width {
+  width: 25%;
+}
+
+.button-container {
+  padding-bottom: 16px;
+}
+
+.button + .button {
+  margin-left: 8px;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.row-is-clicked {
+  font-weight: bold;
+}

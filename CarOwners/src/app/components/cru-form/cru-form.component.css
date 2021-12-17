@@ -1,0 +1,60 @@
+.wrapper {
+  max-width: 580px;
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.flex-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-cars-fields-viewing {
+  display: flex;
+  justify-content: center;
+  max-width: 548px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+.flex-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-button-viewing {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-center {
+  margin: 0 auto;
+}
+
+.width-field {
+  width: 50%;
+}
+
+.margit-right--10 {
+  margin-right: 10px;
+}
+
+.margin-left--16 {
+  margin-left: 16px;
+}
+
+.width--18 {
+  width: 18%;
+}
+
+.validation {
+  color: #F00;
+}
+
+.align-center {
+  text-align: center;
+}
